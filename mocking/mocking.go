@@ -27,6 +27,14 @@ func Countdown(out io.Writer, sleeper Sleeper) {
 		fmt.Fprintln(out, i)
 	}
 
+	// for i := coundownStart; i > 0; i-- {
+	// 	sleeper.Sleep()
+	// }
+
+	// for i := coundownStart; i > 0; i-- {
+	// 	fmt.Fprintln(out, i)
+	// }
+
 	sleeper.Sleep()
 	fmt.Fprintf(out, finalWord)
 }
