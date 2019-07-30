@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+type Person struct {
+	Name    string
+	Profile Profile
+}
+
+type Profile struct {
+	Age  int
+	City string
+}
+
 func TestWalk(t *testing.T) {
 	cases := []struct {
 		Name          string
@@ -34,6 +44,14 @@ func TestWalk(t *testing.T) {
 			}{"Chris", 33},
 			[]string{"Chris"},
 		},
+		{
+			"Nested fields",
+			Person{
+				"Chris",
+				Profile{33, "London"},
+			},
+			[]string{"Chris", "London"},
+		},
 	}
 
 	for _, test := range cases {
@@ -59,6 +77,10 @@ func walk(x interface{}, fn func(input string)) {
 
 		if field.Kind() == reflect.String {
 			fn(field.String())
+		}
+
+		if field.Kind() == reflect.Struct {
+			walk(field.Interface(), fn)
 		}
 	}
 }
