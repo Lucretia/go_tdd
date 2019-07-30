@@ -60,6 +60,14 @@ func TestWalk(t *testing.T) {
 			},
 			[]string{"Chris", "London"},
 		},
+		{
+			"Slices",
+			[]Profile{
+				{33, "London"},
+				{34, "Reykjavík"},
+			},
+			[]string{"London", "Reykjavík"},
+		},
 	}
 
 	for _, test := range cases {
@@ -80,6 +88,12 @@ func TestWalk(t *testing.T) {
 func walk(x interface{}, fn func(input string)) {
 	val := getValue(x)
 
+	if val.Kind() == reflect.Slice {
+		for i := 0; i < val.Len(); i++ {
+			walk(val.Index(i).Interface(), fn)
+		}
+		return
+	}
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
 
